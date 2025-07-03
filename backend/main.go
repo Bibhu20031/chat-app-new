@@ -15,7 +15,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("❌ Error loading .env file")
+		log.Fatal("Error loading .env file")
 	}
 
 	utils.InitCloudinary()
@@ -33,5 +33,8 @@ func main() {
 
 	auth := app.Group("/api/auth")
 	routes.RegisterAuthRoutes(auth)
+
+	messages := app.Group("/api/message")
+	routes.RegisterMessageRoutes(messages)
 	app.Listen(":3000")
 }
