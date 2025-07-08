@@ -9,6 +9,7 @@ import (
 	"github.com/Bibhu20031/chat-app-new/routes"
 	"github.com/Bibhu20031/chat-app-new/utils"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -30,6 +31,12 @@ func main() {
 		err := c.SendString("And the API is UP")
 		return err
 	})
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:5173",
+		AllowHeaders:     "Origin, Content-Type, Accept",
+		AllowCredentials: true,
+	}))
 
 	auth := app.Group("/api/auth")
 	routes.RegisterAuthRoutes(auth)
