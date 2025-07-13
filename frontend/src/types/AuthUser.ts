@@ -1,9 +1,12 @@
 export interface AuthUser {
-  id: number;
-  fullName: string;
-  userName: string;
-  email: string;
-  profilePic?: string;
+  ID: number;
+  FullName: string;
+  Email: string;
+  ProfilePic: string;
+  Password: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  UserName: string;
 }
 
 
@@ -17,6 +20,8 @@ export interface AuthStore {
   logout: () => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
   login: (data: LoginData) => Promise<void>;
+  updateProfile: (data: UpdateProfileData) => Promise<void>;
+
 }
 
 export interface SignupData {
@@ -27,4 +32,8 @@ export interface SignupData {
 export interface LoginData {
   email: string;
   password: string;
+}
+
+export interface UpdateProfileData {
+  profilePic: string;
 }
