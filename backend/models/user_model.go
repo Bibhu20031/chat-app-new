@@ -13,3 +13,5 @@ type User struct {
 	Password   string `gorm:"not null"`
 	ProfilePic string `gorm:"default:''"`
 }
+
+//UserName:   utils.GenerateUniqueUsername(body.FullName)

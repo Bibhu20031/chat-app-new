@@ -41,6 +41,9 @@ func main() {
 	auth := app.Group("/api/auth")
 	routes.RegisterAuthRoutes(auth)
 
+	users := app.Group("/api/users")
+	routes.RegisterUserRoutes(users)
+
 	messages := app.Group("/api/message")
 	routes.RegisterMessageRoutes(messages)
 	app.Listen(":3000")

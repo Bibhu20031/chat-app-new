@@ -12,4 +12,5 @@ func RegisterAuthRoutes(router fiber.Router) {
 	router.Post("/logout", controllers.Logout)
 	router.Put("/update-profile", middleware.ProtectRoute, controllers.UpdateProfile)
 	router.Get("/check", middleware.ProtectRoute, controllers.CheckAuth)
+
 }

@@ -40,7 +40,7 @@ func SignUp(c *fiber.Ctx) error {
 	}
 
 	var existingUser models.User //only to check if the user exists.. doesnt do anything to the database
-	result := db.DB.Where("email = ? OR user_name = ?", body.Email, body.UserName).First(&existingUser)
+	result := db.DB.Where("email = ?", body.Email).First(&existingUser)
 
 	if result.Error == nil {
 		// Found a user with either same email or username
@@ -54,7 +54,7 @@ func SignUp(c *fiber.Ctx) error {
 
 	user := models.User{
 		FullName:   body.FullName,
-		UserName:   body.UserName,
+		UserName:   utils.GenerateUniqueUsername(body.FullName),
 		Email:      body.Email,
 		Password:   string(hashedPassword),
 		ProfilePic: utils.GenerateRandomAvatar(body.Email),
@@ -154,4 +154,27 @@ func UpdateProfile(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusOK).JSON(user)
+}
+
+func SearchUsers(c *fiber.Ctx) error {
+	query := c.Query("query")
+	// log.Println("SearchUsers called with query:", query)
+
+	if query == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "query parameter is required",
+		})
+	}
+
+	var users []models.User
+	err := db.DB.Where("user_name ILIKE ? OR full_name ILIKE ?", "%"+query+"%", "%"+query+"%").Find(&users).Error
+	if err != nil {
+		log.Println("DB error:", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// log.Println("Found users:", len(users))
+	return c.JSON(users)
 }

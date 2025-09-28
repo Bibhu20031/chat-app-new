@@ -12,4 +12,5 @@ func RegisterMessageRoutes(app fiber.Router) {
 	app.Get("/:id", middleware.ProtectRoute, controllers.GetMessages)
 
 	app.Post("/send/:id", middleware.ProtectRoute, controllers.SendMessage)
+
 }
